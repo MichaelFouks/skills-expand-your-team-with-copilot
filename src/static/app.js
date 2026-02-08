@@ -354,22 +354,6 @@ document.addEventListener("DOMContentLoaded", () => {
       default:
         showMessage("Sharing option not available", "error");
     }
-
-    // Close the share modal
-    const shareModal = document.getElementById("share-modal");
-    if (shareModal && platform !== "copy") {
-      shareModal.classList.remove("show");
-      setTimeout(() => {
-        shareModal.classList.add("hidden");
-      }, 300);
-    }
-  }
-
-  // Show message in login modal
-  function showLoginMessage(text, type) {
-    loginMessage.textContent = text;
-    loginMessage.className = `message ${type}`;
-    loginMessage.classList.remove("hidden");
   }
 
   // Open login modal
