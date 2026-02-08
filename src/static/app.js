@@ -333,22 +333,29 @@ document.addEventListener("DOMContentLoaded", () => {
         shareLink = `mailto:?subject=${encodeURIComponent(
           subject
         )}&body=${encodeURIComponent(body)}`;
-        window.location.href = shareLink;
+        window.open(shareLink, "_self");
         showMessage(`Opening email client to share ${activityName}!`, "info");
         break;
 
       case "copy":
         // Copy to clipboard
         const textToCopy = `${text}\n\n${url}`;
-        navigator.clipboard
-          .writeText(textToCopy)
-          .then(() => {
-            showMessage("Link copied to clipboard!", "success");
-          })
-          .catch((err) => {
-            console.error("Failed to copy:", err);
-            showMessage("Failed to copy link. Please try again.", "error");
-          });
+        
+        // Check if clipboard API is available
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          navigator.clipboard
+            .writeText(textToCopy)
+            .then(() => {
+              showMessage("Link copied to clipboard!", "success");
+            })
+            .catch((err) => {
+              console.error("Failed to copy:", err);
+              showMessage("Failed to copy link. Please try again.", "error");
+            });
+        } else {
+          // Fallback for browsers without clipboard API
+          showMessage("Clipboard access not available. Please copy manually: " + url, "info");
+        }
         break;
 
       default:
@@ -707,7 +714,7 @@ document.addEventListener("DOMContentLoaded", () => {
           </div>
         `
         }
-        <button class="share-button" data-activity="${name}" data-description="${details.description}" data-schedule="${formattedSchedule}">
+        <button class="share-button">
           📤 Share
         </button>
       </div>
